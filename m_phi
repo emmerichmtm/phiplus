@@ -1,0 +1,42 @@
+import numpy as np
+from desdeo_tools.utilities.quality_indicator import hypervolume_indicator
+
+class mphi():
+    def __init__(self, ideal, nadir):
+        """Initialize with an ideal point and an nadir point"""
+        self.ideal = ideal
+        self.ideal = self.ideal.astype('float64')
+        self.nadir = nadir
+        self.nadir = self.nadir.astype('float64')
+
+    def normalization(self, s):
+        normalized_s = s.copy()
+        for i in range(len(self.nadir)):
+            min_value = self.ideal[i]
+            max_value = self.nadir[i]
+            normalized_s[:,i] = (s[:,i] - min_value) / (max_value - min_value)
+        return normalized_s
+
+    def get_mphi(self, set_of_s, flag, RP, ub):
+        RP = RP.astype('float64')
+        ub = ub.astype('float64')
+        if len(set_of_s) == 0:
+            return 0
+            
+        # normalization
+        s = self.normalization(set_of_s)
+        r = self.normalization(np.asanyarray(RP).reshape(1, -1))
+        nadir = self.normalization(np.asanyarray(ub).reshape(1, -1))  # set upper limit point as nadir for the calculation of HV
+        nadir = nadir.flatten()
+        
+        # calculation
+        r_hv = hypervolume_indicator(np.asanyarray(r).reshape(1, -1), nadir)  # HV value of R
+        s_hv = hypervolume_indicator(np.asanyarray(s), nadir)  # HV value of solutions
+        if r_hv == 0:
+            return 0
+        else:
+            if flag == 1:  # R is dominated
+                results = s_hv/r_hv
+            if flag == 2:  # R is not dominated
+                results = s_hv / (((2**len(RP))-1) * r_hv)
+        return results
