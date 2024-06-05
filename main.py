@@ -40,8 +40,8 @@ def phiplus(points, L, R, U):
 
 def plot_points(points, L, R, U):
     fig, ax = plt.subplots()
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 10)
+    ax.set_xlim(0, 12)
+    ax.set_ylim(0, 12)
     ax.set_aspect('equal')
 
     # Plot grid
@@ -83,25 +83,41 @@ def plot_points(points, L, R, U):
 
 def main():
     points = [
-        (2, 8),
-        (3, 6),
-        (5, 9),
-        (7, 5),
-        (6, 2),
+        (9, 1),
+        (5, 2),
         (4, 3),
-        (9, 1)
+        (3, 7),
+        (1, 8)
     ]
 
     # Define lower bound, reference point, and upper bound
     L = (2, 2)
-    R = (5, 5)
-    U = (7, 8)
+    R = (6, 6)
+    U = (10, 10)
 
     # Calculate hypervolume indicator
     hv = phiplus(points, L=L, R=R, U=U)
     print(f"Hypervolume indicator with L={L}, R={R}, and U={U}: {hv}")
 
     # Plot points and shaded regions
+    plot_points(points, L, R, U)
+
+    # Second example
+    points = [
+        (8, 3),
+        (4, 4),
+        (3, 5),
+        (12, 3),
+        (1, 7)
+        ]
+
+    L = (0, 0)
+    R = (6, 4)
+    U = (10,6)
+
+    hv = phiplus(points, L=L, R=R, U=U)
+    print(f"Hypervolume indicator with L={L}, R={R}, and U={U}: {hv}")
+    # plot
     plot_points(points, L, R, U)
 
 
