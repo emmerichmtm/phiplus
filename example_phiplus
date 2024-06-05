@@ -14,7 +14,7 @@ from m_phi import mphi
 import matplotlib.pyplot as plt
 from desdeo_tools.utilities.fast_non_dominated_sorting import dominates
 from desdeo_problem.testproblems import EngineeringRealWorld
-import RE
+# import RE
 
 # warnings.filterwarnings("ignore",category=DeprecationWarning)
 
