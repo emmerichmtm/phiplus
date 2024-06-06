@@ -40,14 +40,15 @@ def phiplus(points, L, R, U):
 
 def plot_points(points, L, R, U):
     fig, ax = plt.subplots()
-    ax.set_xlim(0, 12)
-    ax.set_ylim(0, 12)
+    ax.set_xlim(0, 13)
+    ax.set_ylim(0, 11)
     ax.set_aspect('equal')
 
     # Plot grid
     ax.set_xticks(np.arange(0, 11, 1))
     ax.set_yticks(np.arange(0, 11, 1))
     ax.grid(True)
+    ax.grid(True, linestyle='--', linewidth=0.5, color='black', alpha=0.5)
 
     # Shade the dominated regions
     for point in points:
@@ -74,10 +75,10 @@ def plot_points(points, L, R, U):
                              linestyle='--', label='Bounds [L, U]')
     ax.add_patch(rect)
 
-    plt.legend()
-    plt.title("2-D Points and Dominated Regions")
-    plt.xlabel("Objective 1")
-    plt.ylabel("Objective 2")
+    #plt.legend()
+    plt.title("Calculation of Phiplus")
+    plt.xlabel("f1")
+    plt.ylabel("f2")
     plt.show()
 
 
