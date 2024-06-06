@@ -17,7 +17,7 @@ def phiplus(points, L, R, U):
 
     # Let us check if the reference point R is not dominated by any of the points
     if any(point[0] <= R[0] and point[1] <= R[1] for point in points):
-        reference_area = (L[0] - R[0]) * (L[1] - R[1])
+        reference_area = (U[0] - R[0]) * (U[1] - R[1])
     else:
         reference_area = (U[0]- L[0]) * (U[1] - L[1]) - (R[0]-L[0]) * (R[1]-L[1])
 
