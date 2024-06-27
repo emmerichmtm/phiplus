@@ -16,18 +16,17 @@ def phiplus(points, L, R, U):
         raise ValueError("Reference point R must be within the bounds [L, U]")
 
     # Let us check if the reference point R is not dominated by any of the points
-    if any(point[0] <= R[0] and point[1] <= R[1] for point in points):
+    if any(point[0] < R[0] and point[1] < R[1] for point in points):
         reference_area = (U[0] - R[0]) * (U[1] - R[1])
     else:
         reference_area = (U[0]- L[0]) * (U[1] - L[1]) - (R[0]-L[0]) * (R[1]-L[1])
 
     print(f"Reference area: {reference_area}")
-    # Filter points within the bounds [L, U]
-    truncated_points = [point for point in points if L[0] <= point[0] <= U[0] and L[1] <= point[1] <= U[1]]
+    # # Filter points within the bounds [L, U]
+    # truncated_points = [point for point in points if L[0] <= point[0] <= U[0] and L[1] <= point[1] <= U[1]]
 
-    # Remove points that are Pareto dominated by or Pareto dominating the reference point R
-    filtered_points = [point for point in truncated_points if
-                       not (point[0] <= R[0] and point[1] <= R[1]) and not (point[0] >= R[0] and point[1] >= R[1])]
+    # Remove points that are outside the ROI
+    filtered_points = [point for point in points if (point[0] <= R[0] and point[1] <= R[1]) or (L[0] <= point[0] <= U[0] and L[1] <= point[1] <= U[1])]
     # Compute the hypervolume indicator for the filtered points with upper bound U
     hv_filtered_points = hypervolume_indicator(filtered_points, U)
     print(f"Filtered points: {filtered_points}")
