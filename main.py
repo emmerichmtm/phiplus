@@ -26,7 +26,7 @@ def phiplus(points, L, R, U):
     # truncated_points = [point for point in points if L[0] <= point[0] <= U[0] and L[1] <= point[1] <= U[1]]
 
     # Remove points that are outside the ROI
-    filtered_points = [point for point in points if (point[0] <= R[0] and point[1] <= R[1]) or (L[0] <= point[0] <= U[0] and L[1] <= point[1] <= U[1])]
+    filtered_points = [point for point in points if (point[0] < R[0] and point[1] < R[1]) or (L[0] <= point[0] <= U[0] and L[1] <= point[1] <= U[1])]
     # Compute the hypervolume indicator for the filtered points with upper bound U
     hv_filtered_points = hypervolume_indicator(filtered_points, U)
     print(f"Filtered points: {filtered_points}")
