@@ -56,7 +56,7 @@ def non_dominated(data: np.ndarray) -> np.ndarray:
     return index
 
 def check_dominance_relation(nondominated_solutions, rp):
-    """Finds the non-dominated solutions from a population.
+    """Finds the relation between non-dominated solutions and the reference point rp
 
         Args:
             nondominated_solutions: non-dominated solutions of the population
