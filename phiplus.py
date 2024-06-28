@@ -125,10 +125,13 @@ def further_judgment(nondominated_solutions, rp, lp, up):
     return flag, solInROI_phiplus
 
 class phiplus():
-    def __init__(self):
-        """Initialize with an ideal point for hypervolume calculations."""
-        self.nadir: np.ndarray = None
-        self.ideal: np.ndarray = None
+    def __init__(self, nadir, ideal):
+        """Initialize with an ideal point and a nadir point for the normalization
+           If this information is not available, it can be set to None
+           If either value is None, the normalization step will be skipped.
+        """
+        self.nadir = nadir
+        self.ideal = ideal
 
     def normalization(self, s):
         normalized_s = s.copy()
