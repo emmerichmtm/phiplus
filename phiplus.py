@@ -1,4 +1,5 @@
-# phiplus
+# phi: https://github.com/ppouyaa/PHI.git
+# phiplus:
 import hvwfg.wfg as hv
 import numpy as np
 import numba
