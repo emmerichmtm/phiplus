@@ -6,7 +6,7 @@ import numba
 
 @numba.njit()
 def dominates(x: np.ndarray, y: np.ndarray) -> bool:
-# copy from DESDEO (desdeo_tools.utilities.fast_non_dominated_sorting)
+# copy from DESDEO (desdeo_tools.utilities.fast_non_dominated_sorting) (https://github.com/industrial-optimization-group)
 # def dominates(x: np.ndarray, y: np.ndarray) -> int:
     """Returns true if x dominates y.
 
