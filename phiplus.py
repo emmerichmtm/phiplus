@@ -125,6 +125,16 @@ def further_judgment(nondominated_solutions, rp, lp, up):
     return flag, solInROI_phiplus
 
 class phiplus():
+    """Example:
+        pplus = phiplus(None, None)
+    or
+        nadir = np.array([2,2])
+        ideal = np.array([0,0])
+        pplus = phiplus(nadir, ideal)
+
+        deviations = np.array([0.2,0.3])
+        value = pplus.get_phiplus(solutions, rp, deviations, deviations)
+    """
     def __init__(self, nadir, ideal):
         """Initialize with an ideal point and a nadir point for the normalization
            If this information is not available, it can be set to None
@@ -141,8 +151,11 @@ class phiplus():
             normalized_s[:,i] = (s[:,i] - min_value) / (max_value - min_value)
         return normalized_s
 
-    def get_phiplus(self, set_of_solutions, rp, lp, up):
+
+    def get_phiplus(self, set_of_solutions, rp, devations_l, devations_r):
         rp = rp.astype('float64')  # a reference point
+        up = rp + devations_r
+        lp = rp - devations_l
         up = up.astype('float64')  # an upper point
         lp = lp.astype('float64')  # a lower point
 
@@ -162,16 +175,19 @@ class phiplus():
         if self.nadir is not None and self.ideal is not None:  # if it is feasible for normalization
             s = self.normalization(sol_In_ROI)
             r = self.normalization(np.asanyarray(rp).reshape(1, -1))
+            l = self.normalization(np.asanyarray(lp).reshape(1, -1))
             # set the upper point as the nadir for the calculation of HV
             nadir = self.normalization(np.asanyarray(up).reshape(1, -1))
             nadir = nadir.flatten()
         else:
             s = sol_In_ROI
             r = rp
+            l = lp
             nadir = up.flatten()
 
         # calculation the value of PHI+
         r_hv = hv(np.asanyarray(r).reshape(1, -1), nadir)  # HV value of the normalized reference point r or rp
+        l_hv = hv(np.asanyarray(l).reshape(1, -1), nadir)  # HV value of the normalized reference point l or lp
         s_hv = hv(np.asanyarray(s), nadir)  # HV value of normalized solutions or solutions
 
         if r_hv == 0:  # if r is worse than the upper point
@@ -180,6 +196,7 @@ class phiplus():
             if flag == 1:  # r is dominated
                 results = s_hv/r_hv
             if flag == 2:  # r is not dominated
-                results = s_hv / (((2**len(rp))-1) * r_hv)
+                dev = r - l  # Left deviations after normalization
+                results = s_hv / (l_hv-np.prod(dev))
 
         return results
