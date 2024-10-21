@@ -7,9 +7,12 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
 
-def phiplus(points, L, R, U):
-    if L is None or U is None or R is None:
-        raise ValueError("L, R, and U must all be provided")
+def phiplus(points, R, dev_l, dev_r):
+    if R is None or dev_l is None or dev_r is None:
+        raise ValueError("R and deviations must all be provided")
+
+    L = (R[0]-dev_l[0], R[1]-dev_l[1])  # lower bounds of the ROI
+    U = (R[0]+dev_r[0], R[1]+dev_r[1])  # upper bounds of the ROI
 
     # Let us check if the reference point R is within the bounds [L, U]
     if not (L[0] <= R[0] <= U[0] and L[1] <= R[1] <= U[1]):
@@ -90,16 +93,17 @@ def main():
         (1, 8)
     ]
 
-    # Define lower bound, reference point, and upper bound
-    L = (2, 2)
+    # Define reference point, and deviations
     R = (6, 6)
-    U = (10, 10)
+    dev = (4, 4)
 
     # Calculate hypervolume indicator
-    hv = phiplus(points, L=L, R=R, U=U)
-    print(f"Hypervolume indicator with L={L}, R={R}, and U={U}: {hv}")
+    hv = phiplus(points, R=R, dev_l=dev, dev_r=dev)
+    print(f"Hypervolume indicator with R={R}, left deviations={dev}, and right deviations={dev}: {hv}")
 
     # Plot points and shaded regions
+    L = (R[0] - dev[0], R[1] - dev[1])  # lower bounds of the ROI
+    U = (R[0] + dev[0], R[1] + dev[1])  # upper bounds of the ROI
     plot_points(points, L, R, U)
 
     # Second example
@@ -111,13 +115,14 @@ def main():
         (1, 7)
         ]
 
-    L = (0, 0)
     R = (6, 4)
-    U = (10,6)
+    dev = (4, 2)
 
-    hv = phiplus(points, L=L, R=R, U=U)
-    print(f"Hypervolume indicator with L={L}, R={R}, and U={U}: {hv}")
+    hv = phiplus(points, R=R, dev_l=dev, dev_r=dev)
+    print(f"Hypervolume indicator with R={R}, left deviations={dev}, and right deviations={dev}: {hv}")
     # plot
+    L = (R[0] - dev[0], R[1] - dev[1])  # lower bounds of the ROI
+    U = (R[0] + dev[0], R[1] + dev[1])  # upper bounds of the ROI
     plot_points(points, L, R, U)
 
 
